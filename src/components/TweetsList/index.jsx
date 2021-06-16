@@ -1,44 +1,28 @@
-import React, {useEffect, useState} from 'react';
-import axios from 'axios';
+import React, {useEffect} from 'react';
 
 import TweetItem from './TweetItem'
-import Loading from '../Loading/Loading';
-
-import './index.css'
+import Loading from '../Loading';
+import { useTweets } from '../../providers/tweets';
 
 const TweetsList = () => {
+  const { tweets, areLoading, requestTweets } = useTweets();
 
-  const [tweets, setTweets] = useState([]);
-  const [tweetsEmpty, setTweetsEmpty] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  useEffect(
+    () => {
+      requestTweets();
+    }, 
+    [requestTweets],
+  );
 
-  useEffect(() => {
-    axios.get('/posts')
-      .then(res => {
-        setIsLoading(true)
-        if (res.data.length !== 0) {
-          setTweets(res.data)
-        } else {
-          setTweetsEmpty(true)
-        }
-      })
-      .catch(err => {
-        console.log(err);
-      })
-      .finally(()=>{
-        setIsLoading(false)
-      })
-  }, []);
 
-  if (tweetsEmpty) {
+  if (tweets.length === 0) {
     return <p>Your tweets list is empty</p>
   }
 
-
   return (
-    <React.Fragment>
+    <>
       {
-        isLoading ? (<Loading/>):(tweets.map((item, index) => {
+        areLoading ? (<Loading/>):(tweets.map((item, index) => {
           return(
             <TweetItem
               key={item.id}
@@ -49,7 +33,7 @@ const TweetsList = () => {
         })
         )
       }
-    </React.Fragment>
+    </>
   );
 };
 

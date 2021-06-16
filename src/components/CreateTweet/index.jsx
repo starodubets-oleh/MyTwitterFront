@@ -1,13 +1,13 @@
 import React from 'react';
 
-import TextAreaTweet from './TextAreaTweet'
+import TextAreaTweet from './TextAreaTweet';
 
-import './index.css'
+import styles from './styles.module.scss';
 
 const CreateTweet = () => {
   return (
-    <div className='tweet'>
-      <TextAreaTweet/>
+    <div className={styles.tweet}>
+      <TextAreaTweet />
     </div>
   );
 }

@@ -1,14 +1,14 @@
 import React from 'react';
 import axios from 'axios';
-import Main from './pages/Main'
-
+import Main from './pages/Main';
+import TweetsProvider from './providers/tweets';
 
 axios.defaults.baseURL = 'http://localhost:5000';
 
-function App() {
-  return (
-      <Main/>
-  );
-}
+const App = () => (
+  <TweetsProvider>
+    <Main/>
+  </TweetsProvider>
+);
 
 export default App;

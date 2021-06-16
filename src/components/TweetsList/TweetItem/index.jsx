@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import axios from 'axios';
+import React, {useState, useCallback} from 'react';
+import { useTweets } from '../../../providers/tweets';
 
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -10,7 +10,10 @@ import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import FormControl from '@material-ui/core/FormControl';
 
+import styles from './styles.module.scss';
+
 const TweetItem = ({post}) => {
+  const {removeTweet, updateTweet} = useTweets();
 
   const [isEdit, setIsEdit] = useState(false);
   const [value, setValue] = useState(post.post);
@@ -24,24 +27,27 @@ const TweetItem = ({post}) => {
     setIsEdit(true);
   };
 
-  const handleSave = () => {
-    axios.patch(`/posts/${post.id}`, {updatedPost: value})
-    .then(res => console.log(res))
-    .catch(err => console.log(err))
-    .finally(() => setIsEdit(false))
-  }
+  const handleSave = useCallback(
+    async () => {
+      updateTweet(value, post.id);
+      setIsEdit(false);
+    },
+    [updateTweet, post, value],
+  );
+
   const handleCancel = () => {
     setIsEdit(false);
   };
 
-  const handleRemove = () => {
-    axios.delete(`/posts/${post.id}`)
-    .then(res => console.log(res))
-    .catch(err => console.log(err));
-  };
+  const handleRemove = useCallback(
+  () => {
+    removeTweet(post.id)
+  },
+  [removeTweet, post]
+  )
 
   return (
-    <Card className='tweet-item'>
+    <Card className={styles.tweetItem}>
       <CardActionArea>
         <CardContent>
           {
@@ -70,7 +76,7 @@ const TweetItem = ({post}) => {
       <CardActions>
       {
         isEdit ? (
-          <React.Fragment>
+          <>
             <Button
               onClick={handleSave}
               size="small"
@@ -85,9 +91,9 @@ const TweetItem = ({post}) => {
             >
               cancel
             </Button>
-          </React.Fragment>
+          </>
           ):(
-            <React.Fragment>
+            <>
             <Button
               onClick={handleEdit}
               size="small"
@@ -102,7 +108,7 @@ const TweetItem = ({post}) => {
             >
               remove
             </Button>
-            </React.Fragment>
+            </>
           )
         }
       </CardActions>
@@ -111,56 +117,3 @@ const TweetItem = ({post}) => {
 };
 
 export default TweetItem;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// import React from 'react';
-
-// const TweetItem = ({post: {post}, idx}) => {
-//   return (
-//     <div className='tweet-item'>
-//       <div className="post-box">
-//         <div className="ordinals">
-//           {idx + 1}
-//         </div>
-//         <div className="post">
-//           {post}
-//         </div>
-//       </div>
-//       <div className="group-btn">
-//         <div className="delete-btn">
-//           <button>del</button>
-//         </div>
-//         <div className="edit-btn">
-//           <button>edit</button>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default TweetItem;
