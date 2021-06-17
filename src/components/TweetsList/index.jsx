@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 
 import TweetItem from './TweetItem'
 import Loading from '../Loading';
@@ -10,7 +10,7 @@ const TweetsList = () => {
   useEffect(
     () => {
       requestTweets();
-    }, 
+    },
     [requestTweets],
   );
 
@@ -22,8 +22,8 @@ const TweetsList = () => {
   return (
     <>
       {
-        areLoading ? (<Loading/>):(tweets.map((item, index) => {
-          return(
+        areLoading ? (<Loading />) : (tweets.map((item, index) => {
+          return (
             <TweetItem
               key={item.id}
               post={item}

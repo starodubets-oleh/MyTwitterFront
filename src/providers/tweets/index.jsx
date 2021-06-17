@@ -9,7 +9,7 @@ const defaultValue = {
 
 export const TweetsContext = createContext(defaultValue);
 
-const TweetsProvider = ({children}) => {
+const TweetsProvider = ({ children }) => {
   const [tweets, setTweets] = useState([]);
   const [areLoading, setAreLoading] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
@@ -18,7 +18,7 @@ const TweetsProvider = ({children}) => {
     async () => {
       try {
         setAreLoading(true);
-        
+
         const data = await axios.get('/posts');
         setTweets(data.data || []);
       } catch (error) {
@@ -35,7 +35,7 @@ const TweetsProvider = ({children}) => {
       try {
         setIsUpdating(true);
 
-        await axios.post('/posts', {post: tweet});
+        await axios.post('/posts', { post: tweet });
 
         requestTweets();
       } catch (error) {
@@ -52,7 +52,7 @@ const TweetsProvider = ({children}) => {
       try {
         setIsUpdating(true);
         console.log(tweet);
-        await axios.patch(`/posts/${id}`, {updatedPost: tweet});
+        await axios.patch(`/posts/${id}`, { updatedPost: tweet });
 
         requestTweets();
       } catch (error) {

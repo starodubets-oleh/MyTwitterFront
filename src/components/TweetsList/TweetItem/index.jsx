@@ -1,19 +1,19 @@
-import React, {useState, useCallback} from 'react';
+import React, { useState, useCallback } from 'react';
 import { useTweets } from '../../../providers/tweets';
 
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
+import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import FormControl from '@material-ui/core/FormControl';
 
 import styles from './styles.module.scss';
 
-const TweetItem = ({post}) => {
-  const {removeTweet, updateTweet} = useTweets();
+const TweetItem = ({ post }) => {
+  const { removeTweet, updateTweet } = useTweets();
 
   const [isEdit, setIsEdit] = useState(false);
   const [value, setValue] = useState(post.post);
@@ -35,15 +35,18 @@ const TweetItem = ({post}) => {
     [updateTweet, post, value],
   );
 
-  const handleCancel = () => {
-    setIsEdit(false);
-  };
+  const handleCancel = useCallback(
+    () => {
+      setIsEdit(false);
+    },
+    []
+  )
 
   const handleRemove = useCallback(
-  () => {
-    removeTweet(post.id)
-  },
-  [removeTweet, post]
+    () => {
+      removeTweet(post.id)
+    },
+    [removeTweet, post]
   )
 
   return (
@@ -64,7 +67,7 @@ const TweetItem = ({post}) => {
                   />
                 </div>
               </FormControl>
-            ):(
+            ) : (
               <Typography variant="body1" color="textPrimary" component="p">
                 {post.post}
               </Typography>
@@ -74,40 +77,40 @@ const TweetItem = ({post}) => {
         </CardContent>
       </CardActionArea>
       <CardActions>
-      {
-        isEdit ? (
-          <>
-            <Button
-              onClick={handleSave}
-              size="small"
-              color="primary"
-            >
-              save
-            </Button>
-            <Button
-              onClick={handleCancel}
-              size="small"
-              color="primary"
-            >
-              cancel
-            </Button>
-          </>
-          ):(
+        {
+          isEdit ? (
             <>
-            <Button
-              onClick={handleEdit}
-              size="small"
-              color="primary"
-            >
-              edit
-            </Button>
-            <Button
-              onClick={handleRemove}
-              size="small"
-              color="primary"
-            >
-              remove
-            </Button>
+              <Button
+                onClick={handleSave}
+                size="small"
+                color="primary"
+              >
+                save
+              </Button>
+              <Button
+                onClick={handleCancel}
+                size="small"
+                color="primary"
+              >
+                cancel
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button
+                onClick={handleEdit}
+                size="small"
+                color="primary"
+              >
+                edit
+              </Button>
+              <Button
+                onClick={handleRemove}
+                size="small"
+                color="primary"
+              >
+                remove
+              </Button>
             </>
           )
         }

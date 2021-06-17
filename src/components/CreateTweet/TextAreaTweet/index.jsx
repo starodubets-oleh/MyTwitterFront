@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Avatar from '@material-ui/core/Avatar';
 import FormControl from '@material-ui/core/FormControl';
@@ -17,7 +17,7 @@ const TextAreaTweet = () => {
     },
     [],
   );
-  
+
   const clearValue = useCallback(
     () => {
       setValue('');

@@ -12,9 +12,9 @@ const Main = () => {
         <div className={styles.header}>
           <a href='/'>Home</a>
         </div>
-        <CreateTweet/>
+        <CreateTweet />
         <div className={styles.tweetsList}>
-          <TweetsList/>
+          <TweetsList />
         </div>
       </div>
     </div>

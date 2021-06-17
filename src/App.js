@@ -7,7 +7,7 @@ axios.defaults.baseURL = 'http://localhost:5000';
 
 const App = () => (
   <TweetsProvider>
-    <Main/>
+    <Main />
   </TweetsProvider>
 );
 
