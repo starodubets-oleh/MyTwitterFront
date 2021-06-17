@@ -16,7 +16,7 @@ const TweetItem = ({ post }) => {
   const { removeTweet, updateTweet } = useTweets();
 
   const [isEdit, setIsEdit] = useState(false);
-  const [value, setValue] = useState(post.post);
+  const [value, setValue] = useState(post.content);
 
   const handleChange = (event) => {
     event.preventDefault();
@@ -69,7 +69,7 @@ const TweetItem = ({ post }) => {
               </FormControl>
             ) : (
               <Typography variant="body1" color="textPrimary" component="p">
-                {post.post}
+                {post.content}
               </Typography>
 
             )

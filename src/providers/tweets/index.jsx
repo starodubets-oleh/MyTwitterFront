@@ -35,7 +35,7 @@ const TweetsProvider = ({ children }) => {
       try {
         setIsUpdating(true);
 
-        await axios.post('/posts', { post: tweet });
+        await axios.post('/posts', { content: tweet });
 
         requestTweets();
       } catch (error) {
