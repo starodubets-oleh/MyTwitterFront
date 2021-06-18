@@ -1,6 +1,8 @@
 import { useState, useCallback, createContext, useMemo, useContext } from 'react';
 import axios from 'axios';
 
+import { AuthContext } from '../auth'
+
 const defaultValue = {
   tweets: [],
   areLoading: false,
@@ -10,75 +12,93 @@ const defaultValue = {
 export const TweetsContext = createContext(defaultValue);
 
 const TweetsProvider = ({ children }) => {
+
+  const { handleChangeIsLogin } = useContext(AuthContext);
+
   const [tweets, setTweets] = useState([]);
   const [areLoading, setAreLoading] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
 
-  const requestTweets = useCallback(
-    async () => {
-      try {
-        setAreLoading(true);
+  axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
 
-        const data = await axios.get('/posts');
-        setTweets(data.data || []);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setAreLoading(false);
-      }
+  const requestTweets = useCallback(
+    () => {
+      setAreLoading(true);
+      axios.get('/posts')
+        .then((res) => {
+          setTweets(res.data || []);
+        })
+        .catch((error) => {
+          console.log(error);
+          if (error.response.status === 401) {
+            handleChangeIsLogin()
+          }
+        })
+        .finally(() => {
+          setAreLoading(false);
+        })
     },
-    [],
+    [handleChangeIsLogin],
   );
 
   const createTweet = useCallback(
-    async (tweet) => {
-      try {
-        setIsUpdating(true);
-
-        await axios.post('/posts', { content: tweet });
-
-        requestTweets();
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setIsUpdating(false);
-      }
+    (tweet) => {
+      setIsUpdating(false);
+      axios.post('/posts', { content: tweet })
+        .then(() => {
+          requestTweets();
+        })
+        .catch((error) => {
+          console.log(error);
+          if (error.response.status === 401) {
+            handleChangeIsLogin()
+          }
+        })
+        .finally(() => {
+          setIsUpdating(false);
+        })
     },
-    [requestTweets],
+    [requestTweets, handleChangeIsLogin],
   );
 
   const updateTweet = useCallback(
-    async (tweet, id) => {
-      try {
-        setIsUpdating(true);
-        console.log(tweet);
-        await axios.patch(`/posts/${id}`, { updatedPost: tweet });
-
-        requestTweets();
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setIsUpdating(false);
-      }
+    (tweet, id) => {
+      setIsUpdating(false);
+      axios.patch(`/posts/${id}`, { updatedPost: tweet })
+        .then(() => {
+          requestTweets();
+        })
+        .catch((error) => {
+          console.log(error);
+          if (error.response.status === 401) {
+            handleChangeIsLogin()
+          }
+        })
+        .finally(() => {
+          setIsUpdating(false);
+        })
     },
-    [requestTweets],
+    [requestTweets, handleChangeIsLogin],
   );
 
   const removeTweet = useCallback(
-    async (id) => {
-      try {
-        setIsUpdating(true);
-
-        await axios.delete(`/posts/${id}`);
-
-        requestTweets();
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setIsUpdating(false);
-      }
+    (id) => {
+      setIsUpdating(false);
+      axios.delete(`/posts/${id}`)
+        .then(() => {
+          requestTweets();
+        })
+        .catch((error) => {
+          console.log(error);
+          if (error.response.status === 401) {
+            handleChangeIsLogin()
+          }
+        })
+        .finally(() => {
+          setIsUpdating(false);
+        })
     },
-    [requestTweets],
+    [requestTweets, handleChangeIsLogin],
   );
 
   const value = useMemo(
