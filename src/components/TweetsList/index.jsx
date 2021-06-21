@@ -24,19 +24,15 @@ const TweetsList = () => {
   }
 
   return (
-    <>
-      {
-        tweets.map((item, index) => {
-          return (
-            <TweetItem
-              key={item.id}
-              tweet={item}
-              idx={index}
-            />
-          )
-        })
-      }
-    </>
+    tweets.map((item, index) => {
+      return (
+        <TweetItem
+          key={item.id}
+          tweet={item}
+          idx={index}
+        />
+      )
+    })
   );
 };
 
