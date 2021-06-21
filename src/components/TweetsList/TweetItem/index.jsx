@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { useTweets } from '../../../providers/tweets';
 
 import Card from '@material-ui/core/Card';
@@ -67,6 +67,30 @@ const TweetItem = ({ tweet }) => {
       {tweet.content}
     </Typography>
   )
+
+  const tweetContent = useMemo(
+    () => (
+      isEdit ? (
+        <FormControl fullWidth noValidate autoComplete="off">
+          <div>
+            <TextField
+              fullWidth
+              id="standard-textarea"
+              value={value}
+              onChange={handleChange}
+              placeholder="What's happening?"
+              multiline
+            />
+          </div>
+        </FormControl>
+      ) : (
+        <Typography variant="body1" color="textPrimary" component="p">
+          {tweet.content}
+        </Typography>
+      )
+    ),
+    [isEdit, tweet, value]
+  );
 
   return (
     <Card className={styles.tweetItem}>
