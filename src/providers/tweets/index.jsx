@@ -16,14 +16,14 @@ const TweetsProvider = ({ children }) => {
   const { handleChangeIsLogin } = useContext(AuthContext);
 
   const [tweets, setTweets] = useState([]);
-  const [areLoading, setAreLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
 
   axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
 
   const requestTweets = useCallback(
     () => {
-      setAreLoading(true);
+      setLoading(true);
       axios.get('/posts')
         .then((res) => {
           setTweets(res.data || []);
@@ -35,7 +35,7 @@ const TweetsProvider = ({ children }) => {
           }
         })
         .finally(() => {
-          setAreLoading(false);
+          setLoading(false);
         })
     },
     [handleChangeIsLogin],
@@ -104,14 +104,14 @@ const TweetsProvider = ({ children }) => {
   const value = useMemo(
     () => ({
       tweets,
-      areLoading,
+      loading,
       isUpdating,
       requestTweets,
       createTweet,
       removeTweet,
       updateTweet
     }),
-    [tweets, areLoading, requestTweets, createTweet, updateTweet, removeTweet, isUpdating],
+    [tweets, loading, requestTweets, createTweet, updateTweet, removeTweet, isUpdating],
   );
 
   return (

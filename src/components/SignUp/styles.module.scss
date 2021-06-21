@@ -15,8 +15,8 @@
   width: 100%;
   max-width: 500px;
   min-width: 320px;
-  div:not(:last-child){
-    margin-bottom: 1rem;
+  .inputsGroup{
+    margin-bottom: 2rem;
   }
 }
 

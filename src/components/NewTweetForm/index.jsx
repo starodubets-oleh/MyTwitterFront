@@ -4,7 +4,7 @@ import TextAreaTweet from './TextAreaTweet';
 
 import styles from './styles.module.scss';
 
-const CreateTweet = () => {
+const NewTweetForm = () => {
   return (
     <div className={styles.tweet}>
       <TextAreaTweet />
@@ -12,4 +12,4 @@ const CreateTweet = () => {
   );
 }
 
-export default CreateTweet;
+export default NewTweetForm;
