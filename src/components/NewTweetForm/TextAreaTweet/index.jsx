@@ -1,26 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Avatar from '@material-ui/core/Avatar';
+import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
-import SendTweet from '../SendTweet';
-import { useCallback } from 'react';
+import { useTweets } from '../../../providers/tweets';
 
 import styles from './styles.module.scss';
 
 const TextAreaTweet = () => {
+
+  const { createTweet } = useTweets();
+
   const [value, setValue] = useState('');
+
+  const handleSend = useCallback(
+    async () => {
+      await createTweet(value);
+      setValue('');
+    },
+    [value, createTweet],
+  );
 
   const handleChange = useCallback(
     (event) => {
       event.preventDefault()
       setValue(event.target.value);
-    },
-    [],
-  );
-
-  const clearValue = useCallback(
-    () => {
-      setValue('');
     },
     [],
   );
@@ -40,10 +44,16 @@ const TextAreaTweet = () => {
             multiline
           />
         </FormControl>
-        <SendTweet
-          tweet={value}
-          clear={clearValue}
-        />
+        <div className={styles.sendTweet}>
+          <Button
+            onClick={handleSend}
+            variant="contained"
+            color="primary"
+            disabled={value.length === 0}
+          >
+            tweet
+          </Button>
+        </div>
       </div>
     </>
   );

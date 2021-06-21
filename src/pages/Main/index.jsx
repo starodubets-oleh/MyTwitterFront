@@ -1,6 +1,6 @@
 import React from 'react';
 
-import CreateTweet from '../../components/CreateTweet';
+import NewTweetForm from '../../components/NewTweetForm';
 import TweetsList from '../../components/TweetsList';
 
 import styles from './styles.module.scss';
@@ -12,7 +12,7 @@ const Main = () => {
         <div className={styles.header}>
           <a href='/'>Home</a>
         </div>
-        <CreateTweet />
+        <NewTweetForm />
         <div className={styles.tweetsList}>
           <TweetsList />
         </div>

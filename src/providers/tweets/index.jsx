@@ -11,20 +11,20 @@ export const TweetsContext = createContext(defaultValue);
 
 const TweetsProvider = ({ children }) => {
   const [tweets, setTweets] = useState([]);
-  const [areLoading, setAreLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
 
   const requestTweets = useCallback(
     async () => {
       try {
-        setAreLoading(true);
+        setLoading(true);
 
         const data = await axios.get('/posts');
         setTweets(data.data || []);
       } catch (error) {
         console.log(error);
       } finally {
-        setAreLoading(false);
+        setLoading(false);
       }
     },
     [],
@@ -84,14 +84,14 @@ const TweetsProvider = ({ children }) => {
   const value = useMemo(
     () => ({
       tweets,
-      areLoading,
+      loading,
       isUpdating,
       requestTweets,
       createTweet,
       removeTweet,
       updateTweet
     }),
-    [tweets, areLoading, requestTweets, createTweet, updateTweet, removeTweet, isUpdating],
+    [tweets, loading, requestTweets, createTweet, updateTweet, removeTweet, isUpdating],
   );
 
   return (
