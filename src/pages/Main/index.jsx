@@ -1,7 +1,6 @@
 import React from 'react';
 
 import TweetsProvider from '../../providers/tweets'
-
 import NewTweetForm from '../../components/NewTweetForm';
 import TweetsList from '../../components/TweetsList';
 import LogOut from '../../components/LogOut';

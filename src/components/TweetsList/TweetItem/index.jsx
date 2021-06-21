@@ -49,6 +49,25 @@ const TweetItem = ({ tweet }) => {
     [removeTweet, tweet]
   )
 
+  const tweetContent = isEdit ? (
+    <FormControl fullWidth noValidate autoComplete="off">
+      <div>
+        <TextField
+          fullWidth
+          id="standard-textarea"
+          value={value}
+          onChange={handleChange}
+          placeholder="What's happening?"
+          multiline
+        />
+      </div>
+    </FormControl>
+  ) : (
+    <Typography variant="body1" color="textPrimary" component="p">
+      {tweet.content}
+    </Typography>
+  )
+
   const tweetContent = useMemo(
     () => (
       isEdit ? (
