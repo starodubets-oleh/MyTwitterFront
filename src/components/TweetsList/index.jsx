@@ -5,7 +5,7 @@ import Loading from '../Loading';
 import { useTweets } from '../../providers/tweets';
 
 const TweetsList = () => {
-  const { tweets, areLoading, requestTweets } = useTweets();
+  const { tweets, loading, requestTweets } = useTweets();
 
   useEffect(
     () => {
@@ -19,19 +19,22 @@ const TweetsList = () => {
     return <p>Your tweets list is empty</p>
   }
 
+  if (loading) {
+    return <Loading />
+  }
+
   return (
     <>
       {
-        areLoading ? (<Loading />) : (tweets.map((item, index) => {
+        tweets.map((item, index) => {
           return (
             <TweetItem
               key={item.id}
-              post={item}
+              tweet={item}
               idx={index}
             />
           )
         })
-        )
       }
     </>
   );

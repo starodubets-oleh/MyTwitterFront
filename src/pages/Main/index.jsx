@@ -2,7 +2,7 @@ import React from 'react';
 
 import TweetsProvider from '../../providers/tweets'
 
-import CreateTweet from '../../components/CreateTweet';
+import NewTweetForm from '../../components/NewTweetForm';
 import TweetsList from '../../components/TweetsList';
 import LogOut from '../../components/LogOut';
 
@@ -17,7 +17,7 @@ const Main = () => {
             <a href='/'>Home</a>
             <LogOut/>
           </div>
-          <CreateTweet />
+          <NewTweetForm />
           <div className={styles.tweetsList}>
             <TweetsList />
           </div>

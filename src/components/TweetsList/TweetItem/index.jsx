@@ -12,11 +12,11 @@ import FormControl from '@material-ui/core/FormControl';
 
 import styles from './styles.module.scss';
 
-const TweetItem = ({ post }) => {
+const TweetItem = ({ tweet }) => {
   const { removeTweet, updateTweet } = useTweets();
 
   const [isEdit, setIsEdit] = useState(false);
-  const [value, setValue] = useState(post.content);
+  const [value, setValue] = useState(tweet.content);
 
   const handleChange = (event) => {
     event.preventDefault();
@@ -29,10 +29,10 @@ const TweetItem = ({ post }) => {
 
   const handleSave = useCallback(
     async () => {
-      updateTweet(value, post.id);
+      updateTweet(value, tweet.id);
       setIsEdit(false);
     },
-    [updateTweet, post, value],
+    [updateTweet, tweet, value],
   );
 
   const handleCancel = useCallback(
@@ -44,36 +44,35 @@ const TweetItem = ({ post }) => {
 
   const handleRemove = useCallback(
     () => {
-      removeTweet(post.id)
+      removeTweet(tweet.id)
     },
-    [removeTweet, post]
+    [removeTweet, tweet]
+  )
+
+  const tweetContent = isEdit ? (
+    <FormControl fullWidth noValidate autoComplete="off">
+      <div>
+        <TextField
+          fullWidth
+          id="standard-textarea"
+          value={value}
+          onChange={handleChange}
+          placeholder="What's happening?"
+          multiline
+        />
+      </div>
+    </FormControl>
+  ) : (
+    <Typography variant="body1" color="textPrimary" component="p">
+      {tweet.content}
+    </Typography>
   )
 
   return (
     <Card className={styles.tweetItem}>
       <CardActionArea>
         <CardContent>
-          {
-            isEdit ? (
-              <FormControl fullWidth noValidate autoComplete="off">
-                <div>
-                  <TextField
-                    fullWidth
-                    id="standard-textarea"
-                    value={value}
-                    onChange={handleChange}
-                    placeholder="What's happening?"
-                    multiline
-                  />
-                </div>
-              </FormControl>
-            ) : (
-              <Typography variant="body1" color="textPrimary" component="p">
-                {post.content}
-              </Typography>
-
-            )
-          }
+          {tweetContent}
         </CardContent>
       </CardActionArea>
       <CardActions>
