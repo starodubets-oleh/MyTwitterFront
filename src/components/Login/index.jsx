@@ -1,11 +1,11 @@
-import React, { useState, useCallback, useContext } from 'react';
-import { Redirect } from "react-router";
+import React, { useState, useCallback, useEffect } from 'react';
+import {useDispatch} from 'react-redux'
 import { Link } from 'react-router-dom';
-import axios from 'axios';
 import { Formik } from 'formik';
 import * as yup from 'yup';
+import { useHistory } from "react-router";
 
-import { AuthContext } from '../../providers/auth'
+import {userLogin} from '../../redux/actions/userAction'
 
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -13,12 +13,12 @@ import Snackbar from '@material-ui/core/Snackbar';
 import Alert from '@material-ui/lab/Alert';
 
 import styles from './styles.module.scss';
+import { getLocalStorageUser } from '../../utils/localStorageHelpers';
 
 const Login = () => {
 
-  const { isLogin } = useContext(AuthContext)
+  const dispatch = useDispatch();
 
-  const [isLoading, setIsLoading] = useState(false);
   const [openAlert, setOpenAlert] = useState({ status: false, message: '' });
 
   const validationSchema = yup.object().shape({
@@ -32,33 +32,25 @@ const Login = () => {
     []
   );
 
+  const history = useHistory();
+
+  useEffect(() => {
+    if (getLocalStorageUser()) {
+      history.push('/')
+    }
+  }, [history]);
+
   const login = useCallback(
-    ({ email, password }) => {
-      console.log({ email, password });
-      setIsLoading(true);
-
-      axios.post('/user/login', { email, password })
-        .then(res => {
-          localStorage.setItem('token', res.data.token);
-          setIsLoading(false);
-          window.location.reload();
-        })
-        .catch(error => {
-          console.dir(error);
-          setOpenAlert({ status: true, message: error.response.data.message });
-          setIsLoading(false);
-        });
+    (values) => {
+      dispatch(userLogin(values))
+      history.push('/')
     },
-    []
+    [dispatch, history]
   )
-
-  if (isLogin) {
-    return <Redirect to="/" />;
-  };
 
   return (
     <>
-      <div className={styles.login}>
+      <form className={styles.login}>
         <h1 className={styles.title}>Sign In</h1>
         <Formik
           initialValues={{
@@ -103,7 +95,7 @@ const Login = () => {
                 onClick={handleSubmit}
                 variant='contained'
                 color='primary'
-                disabled={!isValid || isLoading}
+                disabled={!isValid}
                 type='submit'
               >
                 sign in
@@ -114,7 +106,7 @@ const Login = () => {
         <div className={styles.footer}>
           <Link to='/sign-up'>to sign up</Link>
         </div>
-      </div>
+      </form>
       <Snackbar
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
         open={openAlert.status}

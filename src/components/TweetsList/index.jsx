@@ -1,42 +1,37 @@
 import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { requestTweetsList } from '../../redux/actions/tweetsAction';
+import { getReversedTweetsList, getLoadingPosts } from '../../redux/selectors/tweetsSelector'
 
 import TweetItem from './TweetItem'
 import Loading from '../Loading';
-import { useTweets } from '../../providers/tweets';
 
 const TweetsList = () => {
-  const { tweets, loading, requestTweets } = useTweets();
 
-  useEffect(
-    () => {
-      requestTweets();
-    },
-    [requestTweets],
-  );
+  const dispatch = useDispatch();
+  const tweets = useSelector(getReversedTweetsList);
+  const isLoading = useSelector(getLoadingPosts);
 
+  useEffect(() => {
+    dispatch(requestTweetsList);
+  }, [dispatch]);
 
   if (tweets.length === 0) {
     return <p>Your tweets list is empty</p>
   }
 
-  if (loading) {
+  if (isLoading) {
     return <Loading />
   }
 
   return (
-    <>
-      {
-        tweets.map((item, index) => {
-          return (
-            <TweetItem
-              key={item.id}
-              tweet={item}
-              idx={index}
-            />
-          )
-        })
-      }
-    </>
+    tweets.map((item) => (
+      <TweetItem
+        key={item.id}
+        tweet={item}
+      />
+    ))
   );
 };
 

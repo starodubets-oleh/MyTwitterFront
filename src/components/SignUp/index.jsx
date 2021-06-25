@@ -1,25 +1,22 @@
-import React, { useState, useCallback, useContext } from 'react';
-import { Redirect } from "react-router";
+import React, { useCallback, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom'
-import axios from 'axios'
+import { useHistory } from "react-router";
 import { Formik } from 'formik';
 import * as yup from 'yup';
 
-import { AuthContext } from '../../providers/auth'
+import { userRegistration } from '../../redux/actions/userAction';
 
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import Snackbar from '@material-ui/core/Snackbar';
-import Alert from '@material-ui/lab/Alert';
+
+import { getLocalStorageUser } from '../../utils/localStorageHelpers';
 
 import styles from './styles.module.scss';
 
 const SignUp = () => {
 
-  const { isLogin } = useContext(AuthContext);
-
-  const [isLoading, setIsLoading] = useState(false);
-  const [openAlert, setOpenAlert] = useState({ status: false, message: '', type: 'error' });
+  const dispatch = useDispatch();
 
   const validationSchema = yup.object().shape({
     name: yup.string().min(2).max(10).required('Required'),
@@ -28,35 +25,24 @@ const SignUp = () => {
     confirmPassword: yup.string().oneOf([yup.ref('password')], 'Password mismatch').required('Required')
   })
 
-  const handleCloseAlert = useCallback(
+  const history = useHistory();
+
+  useEffect(
     () => {
-      setOpenAlert({ status: false, message: '', type: 'error' })
+      if (getLocalStorageUser()) {
+        history.push('/')
+      }
     },
-    []
+    [history],
   );
 
   const signUp = useCallback(
-    ({ name, email, password }, resetForm) => {
-      setIsLoading(true);
-      axios.post('/user/sign-up', { name, email, password })
-        .then(res => {
-          console.log(res.data);
-          setOpenAlert({ status: true, message: res.data.message, type: 'success' });
-          resetForm({});
-          setIsLoading(false);
-        })
-        .catch(error => {
-          console.log(error);
-          setOpenAlert({ status: true, message: error.response.data.message, type: 'error' });
-          setIsLoading(false);
-        })
+    (values, resetForm) => {
+      dispatch(userRegistration(values))
+      resetForm({});
     },
-    []
+    [dispatch]
   )
-
-  if (isLogin) {
-    return <Redirect to="/" />;
-  }
 
   return (
     <>
@@ -135,7 +121,7 @@ const SignUp = () => {
                 onClick={handleSubmit}
                 variant='contained'
                 color='primary'
-                disabled={!isValid || isLoading}
+                disabled={!isValid}
                 type='submit'
               >
                 sign up
@@ -147,19 +133,6 @@ const SignUp = () => {
           <Link to='/login'>to login</Link>
         </div>
       </div>
-      <Snackbar
-        open={openAlert.status}
-        autoHideDuration={6000}
-        onClose={handleCloseAlert}
-      >
-        <Alert
-          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-          onClose={handleCloseAlert}
-          severity={openAlert.type}
-        >
-          {openAlert.message}
-        </Alert>
-      </Snackbar>
     </>
   );
 }

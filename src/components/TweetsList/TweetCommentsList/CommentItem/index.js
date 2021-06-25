@@ -9,18 +9,16 @@ import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import FormControl from '@material-ui/core/FormControl';
 
-import { getLocalStorageUserId } from '../../../utils/localStorageHelpers';
+import { getLocalStorageUserId } from '../../../../utils/localStorageHelpers';
 
-import { deleteTweet, updateTweet } from '../../../redux/actions/tweetsAction'
-
-import TweetCommentsList from '../TweetCommentsList'
+import { deleteComment, updateComment } from '../../../../redux/actions/tweetsAction'
 
 import styles from './styles.module.scss';
 
-const TweetItem = ({ tweet }) => {
+const CommentItem = ({ data }) => {
 
   const [isEdit, setIsEdit] = useState(false);
-  const [value, setValue] = useState(tweet.content);
+  const [value, setValue] = useState(data.content);
 
   const dispatch = useDispatch();
 
@@ -42,9 +40,9 @@ const TweetItem = ({ tweet }) => {
 
   const handleSave = useCallback(
     () => {
-      dispatch(updateTweet(value, tweet.id));
+      dispatch(updateComment(value, data.id));
     },
-    [dispatch, value, tweet],
+    [dispatch, value, data],
   );
 
   const handleCancel = useCallback(
@@ -56,12 +54,12 @@ const TweetItem = ({ tweet }) => {
 
   const handleRemove = useCallback(
     () => {
-      dispatch(deleteTweet(tweet.id))
+      dispatch(deleteComment(data.id))
     },
-    [dispatch, tweet]
+    [dispatch, data]
   )
 
-  const tweetContent = useMemo(
+  const commentContent = useMemo(
     () => (
       isEdit ? (
         <FormControl fullWidth noValidate autoComplete="off">
@@ -77,24 +75,24 @@ const TweetItem = ({ tweet }) => {
         </FormControl>
       ) : (
         <Typography variant="body1" color="textPrimary" component="p">
-          {tweet.content}
+          {data.content}
         </Typography>
       )
     ),
-    [isEdit, tweet, value, handleChange],
+    [isEdit, data, value, handleChange],
   );
 
   return (
-    <Card elevation={3} className={styles.tweetItem}>
+    <Card elevation={3} className={styles.commentItem}>
       <CardActionArea>
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
-            {tweet.user.name}
+            {data.user.name}
           </Typography>
-          {tweetContent}
+          {commentContent}
         </CardContent>
       </CardActionArea>
-      {userId === tweet.user.id && (
+      {userId === data.user.id && (
         <CardActions>
           {
             isEdit ? (
@@ -135,12 +133,8 @@ const TweetItem = ({ tweet }) => {
           }
         </CardActions>
       )}
-      <TweetCommentsList 
-        postId={tweet.id}
-        comments={tweet.comments}
-      />
     </Card>
   );
 };
 
-export default TweetItem;
+export default CommentItem;

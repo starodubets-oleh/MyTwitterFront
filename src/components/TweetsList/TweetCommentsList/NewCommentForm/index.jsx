@@ -7,18 +7,13 @@ import FormControl from '@material-ui/core/FormControl';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 
-import { getLocalStorageUserName } from '../../../utils/localStorageHelpers';
-import {createTweet} from '../../../redux/actions/tweetsAction'
+import {createComment} from '../../../../redux/actions/tweetsAction'
+
+import { getLocalStorageUserName } from '../../../../utils/localStorageHelpers';
 
 import styles from './styles.module.scss';
 
-const TextAreaTweet = () => {
-  
-  const dispatch = useDispatch()
-
-  const validationSchema = yup.object().shape({
-    tweet: yup.string().typeError('Only as a string').min(3, 'short tweet').max(50, 'long tweet').required()
-  })
+const NewCommentForm = ({postId}) => {
 
   const [avatar, setAvatar] = useState('')
 
@@ -28,24 +23,30 @@ const TextAreaTweet = () => {
       setAvatar([name[0], name[name.length - 1]].join(''))
     }
   }, []);
+  
+  const dispatch = useDispatch()
+
+  const validationSchema = yup.object().shape({
+    comment: yup.string().typeError('Only as a string').min(3, 'short tweet').max(50, 'long tweet').required()
+  })
 
   const handleSend = useCallback(
-    async ({tweet}, {resetForm}) => {
-      dispatch(createTweet(tweet))
+    async ({comment}, {resetForm}) => {
+      dispatch(createComment(comment, postId))
       resetForm({})
     },
-    [dispatch],
+    [dispatch, postId],
   );
 
   return (
-    <>
+    <div className={styles.comment}>
       <Avatar>{avatar}</Avatar>
 
       <div className={styles.tweetInner}>
         <Formik
           initialValues={
             {
-              tweet: ''
+              comment: ''
             }
           }
           onSubmit={(values, actions) => handleSend(values, actions)}
@@ -58,13 +59,13 @@ const TextAreaTweet = () => {
                 <TextField
                   fullWidth
                   type='text'
-                  name='tweet'
-                  value={values.tweet}
+                  name='comment'
+                  value={values.comment}
                   onChange={handleChange}
-                  placeholder="What's happening?"
+                  placeholder="New comment"
                   onBlur={handleBlur}
-                  helperText={!dirty && touched.tweet && errors.tweet}
-                  error={!dirty && touched.tweet && errors.tweet}
+                  helperText={!dirty && touched.comment && errors.comment}
+                  error={!dirty && touched.comment && errors.comment}
                   multiline
                 />
               </FormControl>
@@ -75,15 +76,15 @@ const TextAreaTweet = () => {
                   color="primary"
                   disabled={!isValid}
                 >
-                  tweet
+                  comment
                 </Button>
               </div>
             </>
           )}
         </Formik>
       </div>
-    </>
+    </div>
   );
 }
 
-export default TextAreaTweet;
+export default NewCommentForm;
