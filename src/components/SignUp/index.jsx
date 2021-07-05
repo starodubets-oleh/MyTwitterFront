@@ -52,7 +52,7 @@ const SignUp = () => {
   const signUp = useCallback(
     () => {
       setIsLoading(true);
-      axios.post('/user/sign-up', { name, email, password })
+      axios.post('/auth/sign-up', { name, email, password })
         .then(res => {
           console.log(res.data);
           setIsLoading(false);

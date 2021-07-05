@@ -29,7 +29,6 @@ const TweetsList = () => {
         <TweetItem
           key={item.id}
           tweet={item}
-          idx={index}
         />
       )
     })

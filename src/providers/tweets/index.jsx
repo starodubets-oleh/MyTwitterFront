@@ -16,17 +16,20 @@ const TweetsProvider = ({ children }) => {
   const { handleChangeIsLogin } = useContext(AuthContext);
 
   const [tweets, setTweets] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [isUpdating, setIsUpdating] = useState(false);
 
-  axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
+  const data = JSON.parse(localStorage.getItem('token'));
+
+  axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
 
   const requestTweets = useCallback(
     () => {
       setLoading(true);
       axios.get('/posts')
         .then((res) => {
-          setTweets(res.data || []);
+          const { data } = res.data;
+          setTweets(data || []);
         })
         .catch((error) => {
           console.log(error);

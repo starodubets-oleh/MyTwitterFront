@@ -45,9 +45,10 @@ const Login = () => {
   const login = () => {
     setIsLoading(true);
 
-    axios.post('/user/login', { email, password })
+    axios.post(`/auth/login`, { email, password })
       .then(res => {
-        localStorage.setItem('token', res.data.token);
+        const {data} = res.data;
+        localStorage.setItem('token', JSON.stringify(data));
         setIsLoading(false);
         window.location.reload();
       })
