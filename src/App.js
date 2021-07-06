@@ -6,8 +6,12 @@ import history from './history';
 
 import PrivateRoute from './components/PrivateRoute';
 import Main from './pages/Main';
+import Comments from './pages/Comments';
 import Login from './components/Login';
 import SignUp from './components/SignUp';
+import User from './pages/User';
+
+
 import { getLocalStorageUserToken, removeLocalStorageUser } from './utils/localStorageHelpers';
 
 axios.defaults.baseURL = 'http://localhost:5000';
@@ -19,11 +23,15 @@ axios.interceptors.response.use(
       removeLocalStorageUser();
       
       window.location.reload();
+    } else if(error.response.status === 404) {
+      history.push('/404')
     } else {
       Promise.reject(error)
     }
   }
 )
+
+const NotFound = () => <h1>404</h1>
 
 const App = () => {
   return (
@@ -32,6 +40,9 @@ const App = () => {
           <PrivateRoute exact path='/' component={Main} />
           <Route exact path='/login' component={Login} />
           <Route exact path='/sign-up' component={SignUp} />
+          <Route exact path='/posts/:postId/comments' component={Comments} />
+          <Route exact path='/user' component={User} />
+          <Route component={NotFound} />
         </Switch>
       </Router>
   );

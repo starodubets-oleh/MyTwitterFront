@@ -1,11 +1,12 @@
 import React from 'react';
 import { Button } from '@material-ui/core';
 import { useCallback } from 'react';
-import { removeLocalStorageUser } from '../../utils/localStorageHelpers';
+import { removeLocalStorageToken, removeLocalStorageUser } from '../../utils/localStorageHelpers';
 
 const LogOut = () => {
   const handleLogOut = useCallback(() => {
     removeLocalStorageUser();
+    removeLocalStorageToken();
     window.location.reload();
   }, []);
 

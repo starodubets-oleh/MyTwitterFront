@@ -9,9 +9,9 @@ import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import FormControl from '@material-ui/core/FormControl';
 
-import { getLocalStorageUserId } from '../../../../utils/localStorageHelpers';
+import { getLocalStorageUserId } from '../../../utils/localStorageHelpers';
 
-import { deleteComment, updateComment } from '../../../../redux/actions/tweetsAction'
+import { deleteComment, updateComment } from '../../../redux/actions/commentsAction'
 
 import styles from './styles.module.scss';
 
@@ -26,9 +26,9 @@ const CommentItem = ({ data }) => {
 
   const handleChange = useCallback(
     (event) => {
-      setValue(event.target.value);
+      setValue(event.target.value, data.post_id);
     },
-    [],
+    [data],
   );
 
   const handleEdit = useCallback(
@@ -40,7 +40,7 @@ const CommentItem = ({ data }) => {
 
   const handleSave = useCallback(
     () => {
-      dispatch(updateComment(value, data.id));
+      dispatch(updateComment(value, data.id, data.post_id));
     },
     [dispatch, value, data],
   );
@@ -54,7 +54,7 @@ const CommentItem = ({ data }) => {
 
   const handleRemove = useCallback(
     () => {
-      dispatch(deleteComment(data.id))
+      dispatch(deleteComment(data.id, data.post_id))
     },
     [dispatch, data]
   )

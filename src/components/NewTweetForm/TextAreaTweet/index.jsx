@@ -1,5 +1,6 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import React, { useCallback} from 'react';
 import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 import TextField from '@material-ui/core/TextField';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -7,7 +8,7 @@ import FormControl from '@material-ui/core/FormControl';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 
-import { getLocalStorageUserName } from '../../../utils/localStorageHelpers';
+import { getLocalStorageUserName, getLocalStorageUserAvatar } from '../../../utils/localStorageHelpers';
 import {createTweet} from '../../../redux/actions/tweetsAction'
 
 import styles from './styles.module.scss';
@@ -20,15 +21,6 @@ const TextAreaTweet = () => {
     tweet: yup.string().typeError('Only as a string').min(3, 'short tweet').max(50, 'long tweet').required()
   })
 
-  const [avatar, setAvatar] = useState('')
-
-  useEffect(() => {
-    if (getLocalStorageUserName()) {
-      const name = getLocalStorageUserName();
-      setAvatar([name[0], name[name.length - 1]].join(''))
-    }
-  }, []);
-
   const handleSend = useCallback(
     async ({tweet}, {resetForm}) => {
       dispatch(createTweet(tweet))
@@ -39,7 +31,7 @@ const TextAreaTweet = () => {
 
   return (
     <>
-      <Avatar>{avatar}</Avatar>
+      <Avatar component={Link} to='/user' alt={getLocalStorageUserName()} src={getLocalStorageUserAvatar()} />
 
       <div className={styles.tweetInner}>
         <Formik
@@ -64,7 +56,7 @@ const TextAreaTweet = () => {
                   placeholder="What's happening?"
                   onBlur={handleBlur}
                   helperText={!dirty && touched.tweet && errors.tweet}
-                  error={!dirty && touched.tweet && errors.tweet}
+                  error={touched.tweet && errors.tweet ? true : false}
                   multiline
                 />
               </FormControl>

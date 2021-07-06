@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useMemo } from 'react';
 import { useDispatch } from 'react-redux';
+import {Link} from 'react-router-dom'
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
@@ -12,8 +13,6 @@ import FormControl from '@material-ui/core/FormControl';
 import { getLocalStorageUserId } from '../../../utils/localStorageHelpers';
 
 import { deleteTweet, updateTweet } from '../../../redux/actions/tweetsAction'
-
-import TweetCommentsList from '../TweetCommentsList'
 
 import styles from './styles.module.scss';
 
@@ -86,10 +85,10 @@ const TweetItem = ({ tweet }) => {
 
   return (
     <Card elevation={3} className={styles.tweetItem}>
-      <CardActionArea>
+      <CardActionArea component={Link}  to={`/posts/${tweet?.id}/comments`} >
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
-            {tweet.user.name}
+            {tweet?.user?.name}
           </Typography>
           {tweetContent}
         </CardContent>
@@ -135,10 +134,6 @@ const TweetItem = ({ tweet }) => {
           }
         </CardActions>
       )}
-      <TweetCommentsList 
-        postId={tweet.id}
-        comments={tweet.comments}
-      />
     </Card>
   );
 };

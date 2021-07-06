@@ -74,7 +74,7 @@ const Login = () => {
                 label="Email"
                 variant="outlined"
                 helperText={dirty && touched.email && errors.email}
-                error={dirty && touched.email && errors.email}
+                error={touched.email && errors.email ? true : false}
                 onBlur={handleBlur}
               />
               <TextField
@@ -88,7 +88,7 @@ const Login = () => {
                 variant="outlined"
                 type='password'
                 helperText={dirty && touched.password && errors.password}
-                error={dirty && touched.password && errors.password}
+                error={touched.password && errors.password ? true : false}
                 onBlur={handleBlur}
               />
               <Button

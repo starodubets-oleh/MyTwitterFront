@@ -1,0 +1,15 @@
+.wrapper {
+  .inputsGroup:not(:last-child){
+    margin-bottom: 2rem;
+  }
+}
+
+.input{
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: center;
+  button{
+    margin-left: 1rem;
+  }
+}

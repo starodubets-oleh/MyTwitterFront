@@ -72,7 +72,7 @@ const SignUp = () => {
                 label="Name"
                 variant="outlined"
                 helperText={dirty && touched.name && errors.name}
-                error={dirty && touched.name && errors.name}
+                error={touched.name && errors.name ? true : false}
                 onBlur={handleBlur}
               />
               <TextField
@@ -86,7 +86,7 @@ const SignUp = () => {
                 label="Email"
                 variant="outlined"
                 helperText={dirty && touched.email && errors.email}
-                error={dirty && touched.email && errors.email}
+                error={touched.email && errors.email ? true : false}
                 onBlur={handleBlur}
               />
               <TextField
@@ -100,7 +100,7 @@ const SignUp = () => {
                 variant="outlined"
                 type='password'
                 helperText={dirty && touched.password && errors.password}
-                error={dirty && touched.password && errors.password}
+                error={touched.password && errors.password ? true : false}
                 onBlur={handleBlur}
               />
               <TextField
@@ -114,7 +114,7 @@ const SignUp = () => {
                 variant="outlined"
                 type='password'
                 helperText={dirty && touched.confirmPassword && errors.confirmPassword}
-                error={dirty && touched.confirmPassword && errors.confirmPassword}
+                error={touched.confirmPassword && errors.confirmPassword ? true : false}
                 onBlur={handleBlur}
               />
               <Button

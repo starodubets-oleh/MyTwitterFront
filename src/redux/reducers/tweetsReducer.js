@@ -1,5 +1,7 @@
 import {
+  GET_TWEET,
   GET_TWEETS_LIST,
+  IS_LOADING_TWEET,
   IS_LOADING_TWEETS
 } from '../actions/tweetsAction';
 
@@ -14,7 +16,19 @@ const tweetsState = (state = {}, { type, payload }) => {
     case IS_LOADING_TWEETS: {
       return {
         ...state,
-        loadingPosts: payload
+        loadingTweets: payload
+      };
+    }
+    case GET_TWEET: {
+      return {
+        ...state,
+        tweet: payload
+      };
+    }
+    case IS_LOADING_TWEET: {
+      return {
+        ...state,
+        loadingTweet: payload
       };
     }
     default:

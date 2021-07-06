@@ -1,0 +1,29 @@
+.userCard {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 1rem;
+  padding:1rem;
+  box-sizing: border-box;
+}
+
+.card{
+  max-width: 500px;
+  min-width: 350px;
+}
+
+.modal{
+  position: 'absolute';
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 320px;
+  border: 2px solid #000;
+  padding: 2rem;
+}
+
+.modalBody{
+  background: #fff;
+  padding: 1rem;
+  border-radius: 5px;
+}

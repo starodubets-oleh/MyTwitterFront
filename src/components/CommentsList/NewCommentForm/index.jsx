@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import React, { useCallback} from 'react';
 import { useDispatch } from 'react-redux';
 import TextField from '@material-ui/core/TextField';
 import Avatar from '@material-ui/core/Avatar';
@@ -7,22 +7,14 @@ import FormControl from '@material-ui/core/FormControl';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 
-import {createComment} from '../../../../redux/actions/tweetsAction'
+import {createComment} from '../../../redux/actions/commentsAction'
 
-import { getLocalStorageUserName } from '../../../../utils/localStorageHelpers';
+import { getLocalStorageUserName, getLocalStorageUserAvatar } from '../../../utils/localStorageHelpers';
 
 import styles from './styles.module.scss';
 
 const NewCommentForm = ({postId}) => {
 
-  const [avatar, setAvatar] = useState('')
-
-  useEffect(() => {
-    if (getLocalStorageUserName()) {
-      const name = getLocalStorageUserName();
-      setAvatar([name[0], name[name.length - 1]].join(''))
-    }
-  }, []);
   
   const dispatch = useDispatch()
 
@@ -40,7 +32,7 @@ const NewCommentForm = ({postId}) => {
 
   return (
     <div className={styles.comment}>
-      <Avatar>{avatar}</Avatar>
+      <Avatar src={getLocalStorageUserAvatar()} alt={getLocalStorageUserName()} />
 
       <div className={styles.tweetInner}>
         <Formik
@@ -65,7 +57,7 @@ const NewCommentForm = ({postId}) => {
                   placeholder="New comment"
                   onBlur={handleBlur}
                   helperText={!dirty && touched.comment && errors.comment}
-                  error={!dirty && touched.comment && errors.comment}
+                  error={touched.comment && errors.comment ? true : false}
                   multiline
                 />
               </FormControl>
