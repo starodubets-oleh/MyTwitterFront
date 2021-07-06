@@ -36,8 +36,8 @@ const Login = () => {
     []
   );
   const handleCloseAlert = useCallback(
-    (event) => {
-      setOpenAlert(event.target.value);
+    () => {
+      setOpenAlert(false);
     },
     []
   );
