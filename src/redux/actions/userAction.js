@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from 'axios';
 
 import { setLocalStorageUser } from '../../utils/localStorageHelpers';
 
@@ -9,7 +9,7 @@ export const userLogin = (values) => async (dispatch) => {
   try {
     const result = await axios.post(`/auth/login`, values);
     const { data } = await result.data;
-    setLocalStorageUser(data);
+      setLocalStorageUser(data);
 
     window.location.reload();
   } catch (error) {
