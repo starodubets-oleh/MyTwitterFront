@@ -88,7 +88,7 @@ const TweetItem = ({ tweet }) => {
       <CardActionArea component={Link}  to={`/posts/${tweet?.id}/comments`} >
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
-            {tweet?.user?.name}
+            {tweet.user.name}
           </Typography>
           {tweetContent}
         </CardContent>

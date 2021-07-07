@@ -1,3 +1,5 @@
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import React from 'react';
 
 import NewTweetForm from '../../components/NewTweetForm';
@@ -8,11 +10,12 @@ import styles from './styles.module.scss';
 
 const Main = () => {
   return (
+    <>
       <div className={styles.main}>
         <div className={styles.wrapper}>
           <div className={styles.header}>
             <a href='/'>Home</a>
-            <LogOut/>
+            <LogOut />
           </div>
           <NewTweetForm />
           <div className={styles.tweetsList}>
@@ -20,6 +23,8 @@ const Main = () => {
           </div>
         </div>
       </div>
+      <ToastContainer autoClose={5000} />
+    </>
   );
 }
 

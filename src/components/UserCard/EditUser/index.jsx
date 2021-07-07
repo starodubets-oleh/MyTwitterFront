@@ -35,12 +35,7 @@ const EditUser = () => {
     [file, dispatch]
   )
 
-  const handleChangeName = useCallback(
-    (values) => {
-      dispatch(userEditName(values))
-    },
-    [dispatch]
-  )
+  const handleChangeName = values => dispatch(userEditName(values))
 
   const validationSchemaName = yup.object().shape({
     name: yup.string().min(3, 'Name is to short').max(10, 'Name is to large'),

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { toast } from "react-toastify";
 
 export const GET_TWEETS_LIST = 'GET_TWEETS_LIST';
 export const IS_LOADING_TWEETS = 'IS_LOADING_TWEETS';
@@ -31,6 +32,7 @@ export const requestTweetsList = async (dispatch) => {
       payload: data
     });
   } catch (error) {
+    toast.error(error?.response?.data?.message || 'Something went wrong!');
     console.log(error);
   } finally {
     dispatch(isLoadingTweets(false));
@@ -47,6 +49,7 @@ export const requestTweet = (postId) => async (dispatch) => {
       payload: data
     });
   } catch (error) {
+    toast.error(error?.response?.data?.message || 'Something went wrong!');
     console.log(error);
   } finally {
     dispatch(isLoadingTweet(false));
@@ -60,6 +63,7 @@ export const createTweet = (content) => async (dispatch) => {
       type: CREATE_TWEET
     });
   } catch (error) {
+    toast.error(error?.response?.data?.message || 'Something went wrong!');
     console.log(error);
   } finally {
     dispatch(requestTweetsList)
@@ -73,6 +77,7 @@ export const updateTweet = (updatedPost, postId) => async (dispatch) => {
       type: UPDATE_TWEET
     });
   } catch (error) {
+    toast.error(error?.response?.data?.message || 'Something went wrong!');
     console.log(error);
   } finally {
     dispatch(requestTweetsList)
@@ -86,6 +91,7 @@ export const deleteTweet = (postId) => async (dispatch) => {
       type: DELETE_TWEET
     });
   } catch (error) {
+    toast.error(error?.response?.data?.message || 'Something went wrong!');
     console.log(error);
   } finally {
     dispatch(requestTweetsList)

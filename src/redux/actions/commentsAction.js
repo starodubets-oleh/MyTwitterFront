@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { toast } from "react-toastify";
 
 export const GET_COMMENTS_LIST = 'GET_COMMENTS_LIST';
 export const IS_LOADING_COMMENTS = 'IS_LOADING_COMMENTS';
@@ -26,6 +27,7 @@ export const requestCommentsList = (postId) => async (dispatch) => {
       payload: data
     });
   } catch (error) {
+    toast.error(error?.response?.data?.message || 'Something went wrong!');
     console.log(error);
   } finally {
     dispatch({
@@ -42,6 +44,7 @@ export const createComment = (content, postId) => async (dispatch) => {
       type: CREATE_COMMENT
     });
   } catch (error) {
+    toast.error(error?.response?.data?.message || 'Something went wrong!');
     console.log(error);
   } finally {
     dispatch(requestCommentsList(postId));
@@ -55,6 +58,7 @@ export const updateComment = (updatedComment, commentId, postId) => async (dispa
       type: UPDATE_COMMENT
     });
   } catch (error) {
+    toast.error(error?.response?.data?.message || 'Something went wrong!');
     console.log(error);
   } finally {
     dispatch(requestCommentsList(postId));
@@ -68,6 +72,7 @@ export const deleteComment = (commentId, postId) => async (dispatch) => {
       type: DELETE_COMMENT
     });
   } catch (error) {
+    toast.error(error?.response?.data?.message || 'Something went wrong!');
     console.log(error);
   } finally {
     dispatch(requestCommentsList(postId));

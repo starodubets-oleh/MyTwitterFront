@@ -21,12 +21,10 @@ axios.interceptors.response.use(
   (error) => {
     if (error.response.status === 401) {
       removeLocalStorageUser();
-      
-      window.location.reload();
-    } else if(error.response.status === 404) {
-      history.push('/404')
+      return Promise.reject(error)
+      // window.location.reload();
     } else {
-      Promise.reject(error)
+      return Promise.reject(error)
     }
   }
 )

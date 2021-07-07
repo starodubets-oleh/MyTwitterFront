@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { toast } from "react-toastify";
 
 import { setLocalStorageUser, setLocalStorageToken } from '../../utils/localStorageHelpers';
 
@@ -17,10 +18,10 @@ export const userLogin = (values) => async (dispatch) => {
 
     window.location.reload();
   } catch (error) {
+    toast.error(error?.response?.data?.message || 'Something went wrong!');
     console.log(error);
   }
 }
-
 
 export const userRegistration = (values) => async (dispatch) => {
   try {
@@ -36,25 +37,19 @@ export const userData = async (dispatch) => {
   try {
     const user = await axios.get(`/users`);
     const {data} = user.data
-    dispatch({
-      type: USER_DATA
-    });
     setLocalStorageUser(data);
     
   } catch (error) {
+    toast.error(error?.response?.data?.message || 'Something went wrong!');
     console.log(error);
-  }  finally {
-    dispatch(userData)
   }
 };
 
 export const userUploadImage = (value) => async (dispatch) => {
   try {
     await axios.patch(`/users/avatar`, value);
-    dispatch({
-      type: USER_UPLOAD_IMAGE
-    });
   } catch (error) {
+    toast.error(error?.response?.data?.message || 'Something went wrong!');
     console.log(error);
   } finally {
     dispatch(userData)
@@ -63,10 +58,10 @@ export const userUploadImage = (value) => async (dispatch) => {
 export const userEditName = (value) => async (dispatch) => {
   try {
     await axios.patch(`/users`, value);
-    dispatch({
-      type: USER_EDIT_NAME
-    });
   } catch (error) {
+    toast.error(error?.response?.data?.message || 'Something went wrong!');
     console.log(error);
+  } finally {
+    dispatch(userData)
   }
 };
