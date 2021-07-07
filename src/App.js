@@ -8,6 +8,8 @@ import PrivateRoute from './components/PrivateRoute';
 import Main from './pages/Main';
 import Login from './components/Login';
 import SignUp from './components/SignUp';
+import Comments from './pages/Comments';
+
 import { getLocalStorageUserToken, removeLocalStorageUser } from './utils/localStorageHelpers';
 
 axios.defaults.baseURL = 'http://localhost:5000';
@@ -17,10 +19,10 @@ axios.interceptors.response.use(
   (error) => {
     if (error.response.status === 401) {
       removeLocalStorageUser();
-      
-      window.location.reload();
+      return Promise.reject(error)
+      // window.location.reload();
     } else {
-      Promise.reject(error)
+      return Promise.reject(error)
     }
   }
 )
@@ -32,6 +34,7 @@ const App = () => {
           <PrivateRoute exact path='/' component={Main} />
           <Route exact path='/login' component={Login} />
           <Route exact path='/sign-up' component={SignUp} />
+          <Route exact path='/posts/:postId/comments' component={Comments} />
         </Switch>
       </Router>
   );

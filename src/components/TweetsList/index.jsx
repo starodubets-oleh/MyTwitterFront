@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { requestTweetsList } from '../../redux/actions/tweetsAction';
-import { getReversedTweetsList, getLoadingPosts } from '../../redux/selectors/tweetsSelector'
+import { getReversedTweetsList, getLoadingTweets } from '../../redux/selectors/tweetsSelector'
 
 import TweetItem from './TweetItem'
 import Loading from '../Loading';
@@ -11,7 +11,7 @@ const TweetsList = () => {
 
   const dispatch = useDispatch();
   const tweets = useSelector(getReversedTweetsList);
-  const isLoading = useSelector(getLoadingPosts);
+  const isLoading = useSelector(getLoadingTweets);
 
   useEffect(() => {
     dispatch(requestTweetsList);

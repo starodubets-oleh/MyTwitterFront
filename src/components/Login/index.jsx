@@ -1,36 +1,28 @@
-import React, { useState, useCallback, useEffect } from 'react';
-import {useDispatch} from 'react-redux'
+import React, { useCallback, useEffect } from 'react';
+import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { useHistory } from "react-router";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-import {userLogin} from '../../redux/actions/userAction'
+import { userLogin } from '../../redux/actions/userAction'
 
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import Snackbar from '@material-ui/core/Snackbar';
-import Alert from '@material-ui/lab/Alert';
 
-import styles from './styles.module.scss';
 import { getLocalStorageUser } from '../../utils/localStorageHelpers';
+import styles from './styles.module.scss';
 
 const Login = () => {
 
   const dispatch = useDispatch();
 
-  const [openAlert, setOpenAlert] = useState({ status: false, message: '' });
-
   const validationSchema = yup.object().shape({
     email: yup.string().email('Email must be a valid email!').required('Required'),
     password: yup.string().typeError('Only as a string').required('Required')
   })
-  const handleCloseAlert = useCallback(
-    () => {
-      setOpenAlert({ status: false, message: '' });
-    },
-    []
-  );
 
   const history = useHistory();
 
@@ -107,20 +99,7 @@ const Login = () => {
           <Link to='/sign-up'>to sign up</Link>
         </div>
       </form>
-      <Snackbar
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-        open={openAlert.status}
-        autoHideDuration={6000}
-        onClose={handleCloseAlert}
-      >
-        <Alert
-          variant="filled"
-          onClose={handleCloseAlert}
-          severity="error"
-        >
-          {openAlert.message}
-        </Alert>
-      </Snackbar>
+      <ToastContainer autoClose={5000} />
     </>
   );
 };

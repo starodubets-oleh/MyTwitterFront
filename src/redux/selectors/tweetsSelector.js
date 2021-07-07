@@ -1,3 +1,5 @@
 export const tweetsList = state => state.tweetsState.tweets || [];
 export const getReversedTweetsList = state => [...tweetsList(state)].reverse();
-export const getLoadingPosts = state => state.tweetsState.loadingPosts;
+export const getLoadingTweets = state => state.tweetsState.loadingTweets;
+export const getTweet = state => state.tweetsState.tweet || {};
+export const getLoadingTweet = state => state.tweetsState.loadingTweet;

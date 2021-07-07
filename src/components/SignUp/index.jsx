@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom'
 import { useHistory } from "react-router";
 import { Formik } from 'formik';
 import * as yup from 'yup';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import { userRegistration } from '../../redux/actions/userAction';
 
@@ -133,6 +135,7 @@ const SignUp = () => {
           <Link to='/login'>to login</Link>
         </div>
       </div>
+      <ToastContainer autoClose={5000} />
     </>
   );
 }

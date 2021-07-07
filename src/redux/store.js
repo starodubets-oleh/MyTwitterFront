@@ -1,17 +1,25 @@
 import { createStore, combineReducers, compose, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import tweetsState from './reducers/tweetsReducer';
+import commentsState from './reducers/commentsReducer';
 
 const middleware = [ thunk ];
 
 const allReducers = combineReducers({
-  tweetsState
+  tweetsState,
+  commentsState
 });
 
 const initialState = {
   tweetsState: {
     tweets: [],
-    loadingPosts: false,
+    loadingTweets: false,
+    tweet: {},
+    loadingTweet: false,
+  },
+  commentsState: {
+    comments: [],
+    loadingComments: false
   }
 };
 

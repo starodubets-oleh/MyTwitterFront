@@ -1,4 +1,6 @@
 import React from 'react';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import NewTweetForm from '../../components/NewTweetForm';
 import TweetsList from '../../components/TweetsList';
@@ -8,6 +10,7 @@ import styles from './styles.module.scss';
 
 const Main = () => {
   return (
+    <>
       <div className={styles.main}>
         <div className={styles.wrapper}>
           <div className={styles.header}>
@@ -20,6 +23,8 @@ const Main = () => {
           </div>
         </div>
       </div>
+      <ToastContainer autoClose={5000} />
+      </>
   );
 }
 
