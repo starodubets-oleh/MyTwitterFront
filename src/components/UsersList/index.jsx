@@ -9,7 +9,6 @@ import { getUsersData, getLoadingUsers, getPagination } from '../../redux/select
 import UserItem from './UserItem'
 
 import styles from './styles.module.scss'
-import './style.css'
 
 const UsersList = () => {
 
