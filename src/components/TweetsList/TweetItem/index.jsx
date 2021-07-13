@@ -39,6 +39,7 @@ const TweetItem = ({ tweet }) => {
 
   const handleSave = () => {
     dispatch(updateTweet(value, tweet.id));
+    setIsEdit(false);
   }
 
   const handleCancel = () => {

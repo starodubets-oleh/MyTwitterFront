@@ -76,29 +76,29 @@ export const clearTweet = (dispatch) => {
 
 export const createTweet = (content) => async (dispatch) => {
   try {
-    await axios.post('/posts', { content });
+    const result = await axios.post('/posts', { content });
+    const {data} = result.data
     dispatch({
-      type: CREATE_TWEET
+      type: CREATE_TWEET,
+      payload: data
     });
   } catch (error) {
     toast.error(error?.response?.data?.message || 'Something went wrong!');
     console.log(error);
-  } finally {
-    dispatch(requestTweetsList(getLocalStorageUserId()))
   }
 };
 
 export const updateTweet = (updatedPost, postId) => async (dispatch) => {
   try {
-    await axios.patch(`/posts/${postId}`, { updatedPost });
+    const result = await axios.patch(`/posts/${postId}`, { updatedPost });
+    const {data} = result.data
     dispatch({
-      type: UPDATE_TWEET
+      type: UPDATE_TWEET,
+      payload: data
     });
   } catch (error) {
     toast.error(error?.response?.data?.message || 'Something went wrong!');
     console.log(error);
-  } finally {
-    dispatch(requestTweetsList(getLocalStorageUserId()))
   }
 };
 
@@ -106,12 +106,11 @@ export const deleteTweet = (postId) => async (dispatch) => {
   try {
     await axios.delete(`/posts/${postId}`);
     dispatch({
-      type: DELETE_TWEET
+      type: DELETE_TWEET,
+      payload: postId
     });
   } catch (error) {
     toast.error(error?.response?.data?.message || 'Something went wrong!');
     console.log(error);
-  } finally {
-    dispatch(requestTweetsList(getLocalStorageUserId()))
   }
 };
