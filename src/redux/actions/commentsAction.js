@@ -37,6 +37,13 @@ export const requestCommentsList = (postId) => async (dispatch) => {
   }
 };
 
+export const clearCommentsList = (dispatch) => {
+  dispatch({
+    type: GET_COMMENTS_LIST,
+    payload: []
+  });
+}
+
 export const createComment = (content, postId) => async (dispatch) => {
   try {
     await axios.post(`/posts/${postId}/comments`, { content });

@@ -9,14 +9,26 @@ export const USER_UPLOAD_IMAGE = 'USER_UPLOAD_IMAGE';
 export const USER_EDIT_NAME = 'USER_EDIT_NAME';
 export const USER_DATA = 'USER_DATA';
 
+
+export const userData = async (dispatch) => {
+  try {
+    const user = await axios.get(`/user`);
+    const {data} = user.data
+    setLocalStorageUser(data);
+    
+  } catch (error) {
+    toast.error(error?.response?.data?.message || 'Something went wrong!');
+    console.log(error);
+  }
+};
+
 export const userLogin = (values) => async (dispatch) => {
   try {
     const result = await axios.post(`/auth/login`, values);
     const { data: {token, ...otherData} } = await result.data;
     setLocalStorageUser(otherData);
     setLocalStorageToken(token);
-
-    window.location.reload();
+    window.location.reload()
   } catch (error) {
     toast.error(error?.response?.data?.message || 'Something went wrong!');
     console.log(error);
@@ -30,17 +42,6 @@ export const userRegistration = (values) => async (dispatch) => {
       type: USER_REGISTRATION
     });
   } catch (error) {
-    console.log(error);
-  }
-};
-export const userData = async (dispatch) => {
-  try {
-    const user = await axios.get(`/users`);
-    const {data} = user.data
-    setLocalStorageUser(data);
-    
-  } catch (error) {
-    toast.error(error?.response?.data?.message || 'Something went wrong!');
     console.log(error);
   }
 };
@@ -65,3 +66,4 @@ export const userEditName = (value) => async (dispatch) => {
     dispatch(userData)
   }
 };
+

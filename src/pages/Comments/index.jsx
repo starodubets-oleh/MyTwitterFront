@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom'
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -14,7 +15,7 @@ const Comments = () => {
     <div className={styles.main}>
     <div className={styles.wrapper}>
       <div className={styles.header}>
-        <a href='/'>Comments</a>
+      <Link to='/'>Home</Link>
         <LogOut/>
       </div>
       <div className={styles.commentsList}>

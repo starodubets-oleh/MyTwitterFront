@@ -26,13 +26,13 @@ export const getLocalStorageToken = () => {
 
 export const getLocalStorageUserId = () => getLocalStorageUser()?.id || null;
 
-export const getLocalStorageUserName = () => getLocalStorageUser()?.userName || null;
+export const getLocalStorageUserName = () => getLocalStorageUser()?.name || null;
 
 export const getLocalStorageUserEmail = () => getLocalStorageUser()?.email || null;
 
 export const getLocalStorageUserToken = () => getLocalStorageToken() || null;
 
-export const getLocalStorageUserAvatar = () => getLocalStorageUser()?.user_img || null;
+export const getLocalStorageUserAvatar = () => getLocalStorageUser()?.fullPath || null;
 
 export const removeLocalStorageUser = () => localStorage.removeItem(USER_KEY);
 export const removeLocalStorageToken = () => localStorage.removeItem(USER_TOKEN_KEY);

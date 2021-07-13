@@ -1,6 +1,7 @@
+import React from 'react';
+import { Link } from 'react-router-dom'
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import React from 'react';
 
 import NewTweetForm from '../../components/NewTweetForm';
 import TweetsList from '../../components/TweetsList';
@@ -14,7 +15,8 @@ const Main = () => {
       <div className={styles.main}>
         <div className={styles.wrapper}>
           <div className={styles.header}>
-            <a href='/'>Home</a>
+            <Link to='/'>Home</Link>
+            <Link to='/users' >Users</Link>
             <LogOut />
           </div>
           <NewTweetForm />

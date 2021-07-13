@@ -10,9 +10,10 @@ import Comments from './pages/Comments';
 import Login from './components/Login';
 import SignUp from './components/SignUp';
 import User from './pages/User';
+import Users from './pages/Users';
 
 
-import { getLocalStorageUserToken, removeLocalStorageUser } from './utils/localStorageHelpers';
+import { getLocalStorageUserToken, removeLocalStorageToken, removeLocalStorageUser } from './utils/localStorageHelpers';
 
 axios.defaults.baseURL = 'http://localhost:5000';
 axios.defaults.headers.common['Authorization'] = `Bearer ${getLocalStorageUserToken()}`;
@@ -21,6 +22,7 @@ axios.interceptors.response.use(
   (error) => {
     if (error.response.status === 401) {
       removeLocalStorageUser();
+      removeLocalStorageToken();
       return Promise.reject(error)
       // window.location.reload();
     } else {
@@ -38,8 +40,10 @@ const App = () => {
           <PrivateRoute exact path='/' component={Main} />
           <Route exact path='/login' component={Login} />
           <Route exact path='/sign-up' component={SignUp} />
-          <Route exact path='/posts/:postId/comments' component={Comments} />
-          <Route exact path='/user' component={User} />
+          <Route exact path='/user/:userId/posts/:postId/comments' component={Comments} />
+          <Route exact path='/profile' component={User} />
+          <Route exact path='/users' component={Users} />
+          <Route exact path='/user/:id' component={Users} />
           <Route component={NotFound} />
         </Switch>
       </Router>

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { toast } from "react-toastify";
+import { getLocalStorageUserId } from '../../utils/localStorageHelpers';
 
 export const GET_TWEETS_LIST = 'GET_TWEETS_LIST';
 export const IS_LOADING_TWEETS = 'IS_LOADING_TWEETS';
@@ -8,6 +9,7 @@ export const IS_LOADING_TWEET = 'IS_LOADING_TWEET';
 export const CREATE_TWEET = 'CREATE_TWEET';
 export const UPDATE_TWEET = 'UPDATE_TWEET';
 export const DELETE_TWEET = 'DELETE_TWEET';
+export const CLEAR_TWEETS_LIST = 'CLEAR_TWEETS_LIST';
 
 export const isLoadingTweets= (value) => (dispatch) => {
   dispatch({
@@ -22,14 +24,15 @@ export const isLoadingTweet = (value) => (dispatch) => {
   });
 };
 
-export const requestTweetsList = async (dispatch) => {
+export const requestTweetsList = (userId, point, size = 10) => async (dispatch) => {
+  const query = point ? `?point=${point}&size=${size}` : `?size=${size}`
   try {
     dispatch(isLoadingTweets(true));
-    const res = await axios.get('/posts');
-    const { data } = res.data;
+    const res = await axios.get(`/users/${userId}/posts${query}`);
+    const {data, pagination} = res.data;
     dispatch({
       type: GET_TWEETS_LIST,
-      payload: data
+      payload: {data: data || [], pagination}
     });
   } catch (error) {
     toast.error(error?.response?.data?.message || 'Something went wrong!');
@@ -39,14 +42,22 @@ export const requestTweetsList = async (dispatch) => {
   }
 };
 
-export const requestTweet = (postId) => async (dispatch) => {
+export const clearTweetsList = (dispatch) => {
+  dispatch(
+    {
+      type: CLEAR_TWEETS_LIST
+    }
+  )
+}
+
+export const requestTweet = (userId, postId) => async (dispatch) => {
   try {
     dispatch(isLoadingTweet(true));
-    const res = await axios.get(`/posts/${postId}`);
+    const res = await axios.get(`users/${userId}/posts/${postId}`);
     const { data } = res.data;
     dispatch({
       type: GET_TWEET,
-      payload: data
+      payload: data[0] || []
     });
   } catch (error) {
     toast.error(error?.response?.data?.message || 'Something went wrong!');
@@ -55,6 +66,13 @@ export const requestTweet = (postId) => async (dispatch) => {
     dispatch(isLoadingTweet(false));
   }
 };
+
+export const clearTweet = (dispatch) => {
+  dispatch({
+    type: GET_TWEET,
+    payload: []
+  });
+}
 
 export const createTweet = (content) => async (dispatch) => {
   try {
@@ -66,7 +84,7 @@ export const createTweet = (content) => async (dispatch) => {
     toast.error(error?.response?.data?.message || 'Something went wrong!');
     console.log(error);
   } finally {
-    dispatch(requestTweetsList)
+    dispatch(requestTweetsList(getLocalStorageUserId()))
   }
 };
 
@@ -80,7 +98,7 @@ export const updateTweet = (updatedPost, postId) => async (dispatch) => {
     toast.error(error?.response?.data?.message || 'Something went wrong!');
     console.log(error);
   } finally {
-    dispatch(requestTweetsList)
+    dispatch(requestTweetsList(getLocalStorageUserId()))
   }
 };
 
@@ -94,6 +112,6 @@ export const deleteTweet = (postId) => async (dispatch) => {
     toast.error(error?.response?.data?.message || 'Something went wrong!');
     console.log(error);
   } finally {
-    dispatch(requestTweetsList)
+    dispatch(requestTweetsList(getLocalStorageUserId()))
   }
 };

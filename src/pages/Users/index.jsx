@@ -3,13 +3,13 @@ import { Link } from 'react-router-dom'
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import EditUser from '../../components/UserCard';
+import UsersList from '../../components/UsersList';
 import LogOut from '../../components/LogOut';
 
 import styles from './styles.module.scss'
 
 
-const User = () => {
+const Users = () => {
   return (
     <>
       <div className={styles.main}>
@@ -18,8 +18,8 @@ const User = () => {
             <Link to='/'>Home</Link>
             <LogOut />
           </div>
-          <div className={styles.commentsList}>
-            <EditUser />
+          <div className={styles.usersList}>
+            <UsersList/>
           </div>
         </div>
       </div>
@@ -28,4 +28,4 @@ const User = () => {
   );
 }
 
-export default User;
+export default Users;

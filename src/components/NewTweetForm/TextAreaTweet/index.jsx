@@ -31,7 +31,7 @@ const TextAreaTweet = () => {
 
   return (
     <>
-      <Avatar component={Link} to='/user' alt={getLocalStorageUserName()} src={getLocalStorageUserAvatar()} />
+      <Avatar component={Link} to='/profile' alt={getLocalStorageUserName()} src={getLocalStorageUserAvatar()} />
 
       <div className={styles.tweetInner}>
         <Formik

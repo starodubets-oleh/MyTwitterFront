@@ -1,6 +1,6 @@
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
@@ -25,40 +25,29 @@ const TweetItem = ({ tweet }) => {
 
   const userId = getLocalStorageUserId();
 
-  const handleChange = useCallback(
-    (event) => {
-      setValue(event.target.value);
-    },
-    [],
-  );
+  const handleChange = useCallback((event) => {
+    setValue(event.target.value);
+  }, [])
 
-  const handleEdit = useCallback(
-    () => {
-      setIsEdit(true);
-    },
-    [],
-  );
+  const handleClick = (event) => {
+    event.preventDefault();
+  }
 
-  const handleSave = useCallback(
-    () => {
-      dispatch(updateTweet(value, tweet.id));
-    },
-    [dispatch, value, tweet],
-  );
+  const handleEdit = () => {
+    setIsEdit(true);
+  }
 
-  const handleCancel = useCallback(
-    () => {
-      setIsEdit(false);
-    },
-    []
-  )
+  const handleSave = () => {
+    dispatch(updateTweet(value, tweet.id));
+  }
 
-  const handleRemove = useCallback(
-    () => {
-      dispatch(deleteTweet(tweet.id))
-    },
-    [dispatch, tweet]
-  )
+  const handleCancel = () => {
+    setIsEdit(false);
+  }
+
+  const handleRemove = () => {
+    dispatch(deleteTweet(tweet.id))
+  }
 
   const tweetContent = useMemo(
     () => (
@@ -69,6 +58,7 @@ const TweetItem = ({ tweet }) => {
               fullWidth
               value={value}
               onChange={handleChange}
+              onClick={handleClick}
               placeholder="What's happening?"
               multiline
             />
@@ -85,7 +75,7 @@ const TweetItem = ({ tweet }) => {
 
   return (
     <Card elevation={3} className={styles.tweetItem}>
-      <CardActionArea component={Link}  to={`/posts/${tweet?.id}/comments`} >
+      <CardActionArea component={Link} to={`/user/${tweet?.user_id}/posts/${tweet?.id}/comments`} >
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
             {tweet.user.name}

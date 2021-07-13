@@ -1,5 +1,4 @@
 import React from 'react';
-
 import TextAreaTweet from './TextAreaTweet';
 
 import styles from './styles.module.scss';

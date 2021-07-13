@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { requestTweet } from '../../redux/actions/tweetsAction';
-import { requestCommentsList } from '../../redux/actions/commentsAction';
+import { requestTweet, clearTweet } from '../../redux/actions/tweetsAction';
+import { requestCommentsList, clearCommentsList } from '../../redux/actions/commentsAction';
 import { getReversedCommentsList, getLoadingComments } from '../../redux/selectors/commentsSelector';
 import { getTweet, getLoadingTweet } from '../../redux/selectors/tweetsSelector';
 
@@ -16,10 +16,10 @@ import styles from './styles.module.scss';
 
 const CommentsList = () => {
 
-  const { postId } = useParams();
+  const { userId, postId } = useParams();
 
   const dispatch = useDispatch();
-  
+
   const commentsList = useSelector(getReversedCommentsList);
   const isLoadingComments = useSelector(getLoadingComments);
   const tweet = useSelector(getTweet);
@@ -28,15 +28,19 @@ const CommentsList = () => {
   const [comments, setComments] = useState([]);
 
   useEffect(() => {
-    dispatch(requestTweet(postId));
+    dispatch(requestTweet(userId, postId));
     dispatch(requestCommentsList(postId));
-  }, [postId, dispatch]);
+    return () => {
+      dispatch(clearTweet);
+      dispatch(clearCommentsList);
+    }
+  }, [userId, postId, dispatch]);
 
   useEffect(() => {
     setComments(commentsList);
   }, [commentsList]);
 
-  if ( isLoadingTweet || isLoadingComments) {
+  if (isLoadingTweet || isLoadingComments) {
     return <Loading />
   }
 
@@ -45,8 +49,8 @@ const CommentsList = () => {
       <div className={styles.commentContent}>
         {
           tweet.id && <TweetItem
-          tweet={tweet}
-        />
+            tweet={tweet}
+          />
         }
         <NewCommentForm
           postId={postId}

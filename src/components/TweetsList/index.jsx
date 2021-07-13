@@ -1,8 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { requestTweetsList } from '../../redux/actions/tweetsAction';
-import { getReversedTweetsList, getLoadingTweets} from '../../redux/selectors/tweetsSelector'
+import { clearTweetsList, requestTweetsList } from '../../redux/actions/tweetsAction';
+import { tweetsList, getLoadingTweets, getPaginationTweets } from '../../redux/selectors/tweetsSelector'
+import { getLocalStorageUserId } from '../../utils/localStorageHelpers';
+import useScrollLoader from '../../hooks/useScrollLoader';
+import usePrevious from '../../hooks/usePrevious';
 
 import TweetItem from './TweetItem'
 import Loading from '../Loading';
@@ -10,29 +13,131 @@ import Loading from '../Loading';
 const TweetsList = () => {
 
   const dispatch = useDispatch();
-  const tweets = useSelector(getReversedTweetsList);
+  const tweets = useSelector(tweetsList);
+  const pagination = useSelector(getPaginationTweets)
   const isLoading = useSelector(getLoadingTweets);
+  const allTweetsAreLoaded = pagination?.cursors?.after;
+  
+  const [nextPagination, setNextPagination] = useState(0)
+  const previousPagination = usePrevious(nextPagination);
 
   useEffect(() => {
-    dispatch(requestTweetsList);
+    dispatch(requestTweetsList(getLocalStorageUserId()));
+    return () => {
+      dispatch(clearTweetsList)
+    }
   }, [dispatch]);
+
+  const nextPage = useCallback(
+    (pagination) => {
+      dispatch(
+        requestTweetsList(getLocalStorageUserId(), pagination)
+      )
+    },
+    [dispatch],
+  );
+
+  useEffect(
+    () => {
+      if (nextPagination !== previousPagination && allTweetsAreLoaded) {
+        nextPage(nextPagination);
+      }
+    },
+    [nextPagination, previousPagination, nextPage, allTweetsAreLoaded],
+  )
+
+  const handleChangePagination = () => {
+    allTweetsAreLoaded && setNextPagination(pagination?.cursors?.after[0])
+  }
+
+  useScrollLoader(handleChangePagination);
 
   if (tweets.length === 0) {
     return <p>Your tweets list is empty</p>
   }
 
-  if (isLoading) {
-    return <Loading />
-  }
-
   return (
-    tweets.map((item) => (
-      <TweetItem
-        key={item.id}
-        tweet={item}
-      />
-    ))
+    <>
+      {tweets.map((item) => (
+        <TweetItem
+          key={item.id}
+          tweet={item}
+        />
+      ))
+      }
+      {
+        isLoading && <Loading />
+      }
+    </>
   );
 };
 
 export default TweetsList;
+
+
+// import React, { useEffect, useState } from 'react';
+// import { useDispatch, useSelector } from 'react-redux';
+
+// import { clearTweetsList, requestTweetsList } from '../../redux/actions/tweetsAction';
+// import { tweetsList, getLoadingTweets, getPaginationTweets } from '../../redux/selectors/tweetsSelector'
+// import { getLocalStorageUserId } from '../../utils/localStorageHelpers';
+// import useScrollLoader from '../../utils/useScrollLoader';
+// import usePrevious from '../../utils/usePrevious';
+
+// import TweetItem from './TweetItem'
+// import Loading from '../Loading';
+// import { useCallback } from 'react';
+
+// const TweetsList = () => {
+
+//   const dispatch = useDispatch();
+//   const tweets = useSelector(tweetsList);
+//   const pagination = useSelector(getPaginationTweets)
+//   const isLoading = useSelector(getLoadingTweets);
+//   const allTweetsAreLoaded = pagination?.cursors?.after;
+  
+//   const [nextPagination, setNextPagination] = useState(0)
+//   const previousPagination = usePrevious(nextPagination);
+
+//   useEffect(() => {
+//     dispatch(requestTweetsList(getLocalStorageUserId()));
+//     return () => {
+//       dispatch(clearTweetsList)
+//     }
+//   }, [dispatch]);
+
+//   const nextPage = useCallback(
+//     () => {
+//       allTweetsAreLoaded && setNextPagination(pagination?.cursors?.after[0])
+//       if (!isLoading && allTweetsAreLoaded && nextPagination !== previousPagination) {
+//         dispatch(
+//           requestTweetsList(getLocalStorageUserId(), nextPagination)
+//         )
+//       }
+//     },
+//     [isLoading, pagination, dispatch, allTweetsAreLoaded, nextPagination, previousPagination],
+//   )
+
+//   useScrollLoader(nextPage);
+
+//   if (tweets.length === 0) {
+//     return <p>Your tweets list is empty</p>
+//   }
+
+//   return (
+//     <>
+//       {tweets.map((item) => (
+//         <TweetItem
+//           key={item.id}
+//           tweet={item}
+//         />
+//       ))
+//       }
+//       {
+//         isLoading && <Loading />
+//       }
+//     </>
+//   );
+// };
+
+// export default TweetsList;

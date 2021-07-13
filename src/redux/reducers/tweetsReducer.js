@@ -2,7 +2,8 @@ import {
   GET_TWEET,
   GET_TWEETS_LIST,
   IS_LOADING_TWEET,
-  IS_LOADING_TWEETS
+  IS_LOADING_TWEETS,
+  CLEAR_TWEETS_LIST
 } from '../actions/tweetsAction';
 
 const tweetsState = (state = {}, { type, payload }) => {
@@ -10,8 +11,16 @@ const tweetsState = (state = {}, { type, payload }) => {
     case GET_TWEETS_LIST: {
       return {
         ...state,
-        tweets: payload
+        tweets: [...state.tweets ,...payload.data],
+        paginationTweets: payload.pagination
       };
+    }
+    case CLEAR_TWEETS_LIST : {
+      return {
+        ...state,
+        tweets: [],
+        paginationTweets: {}
+      }
     }
     case IS_LOADING_TWEETS: {
       return {
