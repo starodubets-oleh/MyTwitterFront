@@ -5,7 +5,7 @@ import { useHistory } from "react-router";
 import { Formik } from 'formik';
 import * as yup from 'yup';
 
-import { userRegistration } from '../../redux/actions/userAction';
+import { userRegistration } from '../../redux/actions/authAction';
 
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';

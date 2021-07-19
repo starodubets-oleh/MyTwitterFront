@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { toast } from "react-toastify";
-import { getLocalStorageUserId } from '../../utils/localStorageHelpers';
+
 
 export const GET_TWEETS_LIST = 'GET_TWEETS_LIST';
 export const IS_LOADING_TWEETS = 'IS_LOADING_TWEETS';

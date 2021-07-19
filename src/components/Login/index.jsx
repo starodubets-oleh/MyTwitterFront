@@ -7,7 +7,7 @@ import { useHistory } from "react-router";
 import { ToastContainer } from 'react-toastify'
 import "react-toastify/dist/ReactToastify.css";
 
-import { userLogin } from '../../redux/actions/userAction'
+import { userLogin } from '../../redux/actions/authAction'
 
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
